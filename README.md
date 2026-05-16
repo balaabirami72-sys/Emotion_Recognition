@@ -12,5 +12,4 @@ https://emotionrecognition-123.streamlit.app/
 * **Machine Learning Backend:** TensorFlow / Keras
 * **Numerical Processing:** NumPy
 ```bash
-git clone [https://github.com/balaabirami72-sys/Emotion_Recognition.git](https://github.com/balaabirami72-sys/Emotion_Recognition.git)
-cd Emotion_Recognition
+
