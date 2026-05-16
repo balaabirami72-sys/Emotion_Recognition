@@ -3,5 +3,4 @@ audio-recorder-streamlit
 tensorflow
 librosa
 numpy
-sounddevice
 scipy
