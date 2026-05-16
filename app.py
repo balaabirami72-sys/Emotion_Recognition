@@ -2,6 +2,7 @@ import os
 import numpy as np
 import librosa
 import streamlit as st
+import urllib.request
 from tensorflow.keras.models import load_model
 from audio_recorder_streamlit import audio_recorder
 
@@ -10,6 +11,26 @@ st.set_page_config(page_title="Speech Emotion Classifier", page_icon="🎙️", 
 
 st.title("🎙️ Speech Emotion Recognition System")
 st.markdown("Analyze vocal features using a Deep Learning 1D-CNN pipeline to detect the underlying emotional state.")
+
+# --- AUTOMATIC CLOUD RECOVERY FOR ML FILES ---
+def download_missing_assets():
+    """Automatically downloads model assets if they are skipped by Git / cloud storage."""
+    GITHUB_RAW_URL = "https://raw.githubusercontent.com/balaabirami72-sys/Emotion_Recognition/main/"
+    assets = {
+        "best_model.h5": GITHUB_RAW_URL + "best_model.h5",
+        "classes.npy": GITHUB_RAW_URL + "classes.npy"
+    }
+    
+    for filename, url in assets.items():
+        if not os.path.exists(filename):
+            with st.spinner(f"📥 Cloud Sync: Downloading {filename} framework assets..."):
+                try:
+                    urllib.request.urlretrieve(url, filename)
+                except Exception as e:
+                    st.warning(f"Could not pull {filename} from primary Git head: {e}")
+
+# Run asset safety check before loading pipeline layers
+download_missing_assets()
 
 # --- LOAD MODEL AND LABELS ---
 @st.cache_resource
@@ -27,7 +48,7 @@ def load_ser_pipeline():
 model, classes = load_ser_pipeline()
 
 if model is None:
-    st.error("⚠️ Error: 'best_model.h5' or 'classes.npy' not found! Please run your training script first.")
+    st.error("⚠️ System Failure: Deep Learning assets ('best_model.h5' / 'classes.npy') could not be initialized locally or from the Git remote path.")
     st.stop()
 
 # --- FEATURE EXTRACTION FUNCTION ---
@@ -69,7 +90,7 @@ with tab2:
     st.subheader("Record Voice via Microphone")
     st.write("Click the microphone icon below to start recording. Click it again to stop.")
     
-    # Lightweight live recording widget
+    # Lightweight web-safe live recording widget
     recorded_audio_bytes = audio_recorder(
         text="Click to record",
         recording_color="#e74c3c",
