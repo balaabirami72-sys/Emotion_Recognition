@@ -1,0 +1,7 @@
+streamlit==1.57.0
+audio-recorder-streamlit
+tensorflow
+librosa
+numpy
+sounddevice
+scipy
